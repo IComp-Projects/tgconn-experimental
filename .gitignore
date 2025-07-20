@@ -1,0 +1,13 @@
+.env
+go.work
+go.work.sum
+*.test
+*.out
+coverage.*
+*.coverprofile
+profile.cov
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
