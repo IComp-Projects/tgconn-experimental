@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -14,7 +15,10 @@ func main() {
 
 	http.HandleFunc("/auth", svc.ValidateInitData)
 
-	err := http.ListenAndServe(":4444", nil)
+	addr := ":4444"
+
+	log.Println("Starting server on", addr)
+	err := http.ListenAndServe(addr, nil)
 
 	if err != nil {
 		panic(err)
