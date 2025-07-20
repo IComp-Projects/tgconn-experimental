@@ -1,0 +1,4 @@
+github.com/icomp-projects/tgconn-experimental/shared v0.0.0-20250720193430-482a81ab3798 h1:xfUu4Ht9rq+Rghpl1wwsxJ++blMdtnrvSXkCTIyLVgU=
+github.com/icomp-projects/tgconn-experimental/shared v0.0.0-20250720193430-482a81ab3798/go.mod h1:lFl6RLLBvRFBElr7JzCHZpfALSpfuhp5/ggUhtKVghA=
+github.com/telegram-mini-apps/init-data-golang v1.5.0 h1:rtpsmQ/nihkicPvnrdRXmHHtTnPvG1FmxMRZJwMKPz0=
+github.com/telegram-mini-apps/init-data-golang v1.5.0/go.mod h1:GG4HnRx9ocjD4MjjzOw7gf9Ptm0NvFbDr5xqnfFOYuY=

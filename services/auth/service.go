@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/letabilis/tgconn/shared"
+	"github.com/icomp-projects/tgconn-experimental/shared"
 
 	initdata "github.com/telegram-mini-apps/init-data-golang"
 )

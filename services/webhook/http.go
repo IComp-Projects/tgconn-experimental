@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/letabilis/tgconn/shared"
+	"github.com/icomp-projects/tgconn-experimental/shared"
 )
 
 type server struct {
