@@ -1,10 +1,10 @@
-module github.com/icomp-projects/tgconn-experimental/webhook
+module github.com/icomp-projects/tgconn-experimental/app
 
 go 1.24.3
 
 require (
-	github.com/icomp-projects/tgconn-experimental/shared v0.0.0-20250720193430-482a81ab3798
 	github.com/imroc/req/v3 v3.54.0
+	github.com/telegram-mini-apps/init-data-golang v1.5.0
 )
 
 require (

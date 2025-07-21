@@ -1,4 +1,7 @@
 .env
+tmp/
+tgconn-app
+.vscode/
 go.work
 go.work.sum
 *.test
@@ -11,3 +14,4 @@ profile.cov
 *.dll
 *.so
 *.dylib
+

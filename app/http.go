@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/icomp-projects/tgconn-experimental/shared"
+	"os"
+	"strconv"
+	"time"
 )
 
 type server struct {
@@ -23,7 +24,7 @@ func NewServer(addr string, svc service) *server {
 func (s *server) handleUpdates(w http.ResponseWriter, r *http.Request) {
 	var update TelegramUpdate
 
-	if err := shared.ReadJSON(r, &update); err != nil {
+	if err := ReadJSON(r, &update); err != nil {
 		http.Error(w, fmt.Sprintf("Error reading JSON: %s", err), http.StatusBadRequest)
 		return
 	}
@@ -35,12 +36,8 @@ func (s *server) handleUpdates(w http.ResponseWriter, r *http.Request) {
 	case "/start":
 		msg = s.cmd.Start(r.Context())
 	case "/bind":
-		in := BindInput{
-			TelegramID: update.Message.From.ID,
-			ChatID:     update.Message.Chat.ID,
-			ChatTitle:  update.Message.Chat.Title,
-		}
-		msg = s.cmd.Bind(r.Context(), in)
+		in := update.asBindInput()
+		msg = s.cmd.Bind(r.Context(), *in)
 	default:
 		msg = Message{
 			Text:        "Erro: Comando não suportado.",
@@ -55,13 +52,21 @@ func (s *server) handleUpdates(w http.ResponseWriter, r *http.Request) {
 		ReplyMarkup: msg.ReplyMarkup,
 	}
 
-	shared.WriteJSON(w, http.StatusOK, reply)
+	WriteJSON(w, http.StatusOK, reply)
 }
 
 func (s *server) Run() error {
 	router := http.NewServeMux()
 
+	authExpiry := time.Hour
+	botID, err := strconv.ParseInt(os.Getenv("BOT_ID"), 10, 64)
+
+	if err != nil {
+		panic(err)
+	}
+
 	router.HandleFunc("/webhook", s.handleUpdates)
+	router.Handle("/auth", CORS(s.cmd.frontendURL, Auth(botID, authExpiry, nil)))
 
 	log.Println("Starting server on", s.addr)
 	return http.ListenAndServe(s.addr, router)
