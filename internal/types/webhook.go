@@ -8,6 +8,7 @@ type TelegramUpdate struct {
 		Chat struct {
 			ID    int64  `json:"id"`
 			Title string `json:"title"`
+			Type  string `json:"type"`
 		} `json:"chat"`
 		Text string `json:"text"`
 	} `json:"message"`

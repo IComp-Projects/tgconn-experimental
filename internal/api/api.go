@@ -1,6 +1,7 @@
 package api
 
 import (
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -10,23 +11,25 @@ import (
 
 type application struct {
 	config Config
+	Logger *slog.Logger
 }
 
 type Config struct {
 	Addr string
 }
 
-func New(cfg Config) *application {
+func New(cfg Config, logger *slog.Logger) *application {
 	return &application{
 		config: cfg,
+		Logger: logger,
 	}
 }
 
 func (app *application) Mount() http.Handler {
 	r := chi.NewRouter()
 
-	r.Use(middleware.Recoverer)
 	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 
 	r.Route("/v1", func(r chi.Router) {
 		r.Post("/webhook", app.HandleUpdates)
