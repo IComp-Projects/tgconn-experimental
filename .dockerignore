@@ -1,7 +1,3 @@
-tmp/
-build/
-vendor/
-.git
-.DS_Store
-*.log
-Dockerfile*
+Dockerfile
+compose.yaml
+.envrc

@@ -1,10 +1,11 @@
-module github.com/icomp-projects/tgconn-experimental/app
+module github.com/icomp-projects/tgconn
 
 go 1.24.3
 
 require (
+	github.com/go-chi/chi v1.5.5
+	github.com/go-chi/chi/v5 v5.2.2
 	github.com/imroc/req/v3 v3.54.0
-	github.com/telegram-mini-apps/init-data-golang v1.5.0
 )
 
 require (

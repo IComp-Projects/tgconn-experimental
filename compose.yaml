@@ -1,0 +1,6 @@
+services:
+  icomp-polls-bot:
+    build:
+      context: .
+    ports:
+      - "5555:${PORT}"
