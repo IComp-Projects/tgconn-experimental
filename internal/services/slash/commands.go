@@ -2,41 +2,36 @@ package slash
 
 import (
 	"context"
+	"time"
 
 	"github.com/icomp-projects/tgconn/internal/env"
+	"github.com/icomp-projects/tgconn/internal/helpers"
 	"github.com/icomp-projects/tgconn/internal/types"
 	"github.com/imroc/req/v3"
 )
 
-var FRONTEND_BASE_URL = env.GetString(
-	"FRONTEND_BASE_URL",
-	"https://poll-miniapp.vercel.app")
+var (
+	BACKEND_BASE_URL = env.GetString(
+		"BACKEND_BASE_URL",
+		"https://bot-telegram-test-server1.onrender.com")
 
-var BACKEND_BASE_URL = env.GetString(
-	"BACKEND_BASE_URL",
-	"https://bot-telegram-test-server1.onrender.com")
+	client = req.C().SetTimeout(5 * time.Second)
+	// instead of DevMode could be SetTimeout(5 * time.Second)
+)
 
 func Start(_ context.Context) types.Message {
-	criarEnquete := types.InlineKeyboardButton{
-		Text: "Criar enquete",
-		WebApp: &types.WebAppInfo{
-			URL: FRONTEND_BASE_URL + "/createPolls",
-		},
-	}
 
-	vincularGrupo := types.InlineKeyboardButton{
-		Text: "Vincular grupo",
-		WebApp: &types.WebAppInfo{
-			URL: FRONTEND_BASE_URL + "/vinculo",
-		},
-	}
+	criarEnquete := *helpers.MakeWebAppButton("📝 Criar enquete", "/createPolls")
+	vincularGrupo := *helpers.MakeWebAppButton("🔗 Vincular grupo", "/vincularGrupo")
+	ajuda := *helpers.MakeWebAppButton("❓ Ajuda", "/help")
 
 	return types.Message{
-		Text: "Vamos começar 🖥️\nSelecione a opção desejada.",
+		Text: "Jax 🤖 na área. \n\nO que deseja fazer?",
 		ReplyMarkup: &types.ReplyMarkup{
 			InlineKeyboard: [][]types.InlineKeyboardButton{
 				{criarEnquete},
 				{vincularGrupo},
+				{ajuda},
 			},
 		},
 	}
@@ -44,11 +39,8 @@ func Start(_ context.Context) types.Message {
 
 func Bind(ctx context.Context, in types.BindInput) types.Message {
 	m := types.Message{
-		Text:        "Erro: Não foi possível vincular este grupo.",
-		ReplyMarkup: nil,
+		Text: "❌ Não foi possível vincular este grupo.\nTente novamente ou contate o suporte.",
 	}
-
-	client := req.C().DevMode()
 
 	resp, err := client.R().
 		SetBody(in).
@@ -58,6 +50,6 @@ func Bind(ctx context.Context, in types.BindInput) types.Message {
 		return m
 	}
 
-	m.Text = "Sucesso: Grupo vinculado."
+	m.Text = "✅ Grupo vinculado com sucesso!"
 	return m
 }
