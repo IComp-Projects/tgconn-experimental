@@ -15,8 +15,8 @@ type TelegramUpdate struct {
 }
 
 type TelegramUpdateReply struct {
-	Method      string      `json:"method"`
-	ChatID      int64       `json:"chat_id"`
-	Text        string      `json:"text"`
-	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
+	Method      string       `json:"method"`
+	ChatID      int64        `json:"chat_id"`
+	Text        string       `json:"text"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 }

@@ -1,4 +1,4 @@
-package cli
+package slash
 
 import (
 	"context"
@@ -33,7 +33,7 @@ func Start(_ context.Context) types.Message {
 
 	return types.Message{
 		Text: "Vamos começar 🖥️\nSelecione a opção desejada.",
-		ReplyMarkup: types.ReplyMarkup{
+		ReplyMarkup: &types.ReplyMarkup{
 			InlineKeyboard: [][]types.InlineKeyboardButton{
 				{criarEnquete},
 				{vincularGrupo},
@@ -45,7 +45,7 @@ func Start(_ context.Context) types.Message {
 func Bind(ctx context.Context, in types.BindInput) types.Message {
 	m := types.Message{
 		Text:        "Erro: Não foi possível vincular este grupo.",
-		ReplyMarkup: types.ReplyMarkup{},
+		ReplyMarkup: nil,
 	}
 
 	client := req.C().DevMode()

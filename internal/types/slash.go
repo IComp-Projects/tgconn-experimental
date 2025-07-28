@@ -1,8 +1,8 @@
 package types
 
 type Message struct {
-	Text        string      `json:"text"`
-	ReplyMarkup ReplyMarkup `json:"reply_markup"`
+	Text        string       `json:"text"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup"`
 }
 
 type BindInput struct {

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/icomp-projects/tgconn/internal/helpers"
-	"github.com/icomp-projects/tgconn/internal/services/cli"
+	"github.com/icomp-projects/tgconn/internal/services/slash"
 	"github.com/icomp-projects/tgconn/internal/types"
 )
 
@@ -29,29 +29,32 @@ func (app *application) HandleUpdates(w http.ResponseWriter, r *http.Request) {
 	var msg types.Message
 	switch update.Message.Text {
 	case "/start":
-		msg = cli.Start(r.Context())
+		msg = slash.Start(r.Context())
 	case "/bind":
 		if update.Message.Chat.Type != "group" {
 			msg = types.Message{
 				Text:        "Erro: Comando /bind só pode ser usado em grupos.",
-				ReplyMarkup: types.ReplyMarkup{},
+				ReplyMarkup: nil,
 			}
 			break
 		}
 		in := update.AsBindInput()
-		msg = cli.Bind(r.Context(), *in)
+		msg = slash.Bind(r.Context(), *in)
 	default:
 		msg = types.Message{
 			Text:        "Erro: Comando não suportado.",
-			ReplyMarkup: types.ReplyMarkup{},
+			ReplyMarkup: nil,
 		}
 	}
 
 	reply := types.TelegramUpdateReply{
-		Method:      "sendMessage",
-		ChatID:      update.Message.Chat.ID,
-		Text:        msg.Text,
-		ReplyMarkup: msg.ReplyMarkup,
+		Method: "sendMessage",
+		ChatID: update.Message.Chat.ID,
+		Text:   msg.Text,
+	}
+
+	if msg.ReplyMarkup != nil {
+		reply.ReplyMarkup = msg.ReplyMarkup
 	}
 
 	helpers.WriteJSON(w, http.StatusOK, reply)
